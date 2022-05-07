@@ -1,5 +1,5 @@
 numpy
 paddlepaddle_gpu>=2.2
-Pillow==8.4.0
-scipy
+Pillow>=9.0.1
 wandb
+opencv-python

@@ -13,9 +13,6 @@ from engine import evaluate
 import models
 
 
-RABatchSampler = DistributedBatchSampler
-
-
 def get_args_parser():
     parser = argparse.ArgumentParser('TokenLabeling training and evaluation script', add_help=False)
     parser.add_argument('--batch_size', default=64, type=int,

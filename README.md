@@ -120,9 +120,13 @@ python -m paddle.distributed.launch --gpus="0,1,2,3,4,5,6,7" \
     --token_label_data /path/to/label_top5_train_nfnet \
     --token_label_size 14 \
     --data_path /path/to/imagenet/ \
+    --cls_label_path_train /path/to/train_list.txt \
+    --cls_label_path_val /path/to/val_list.txt \
     --output_dir output/lvvit_t/ \
     --crop_pct 0.9 --dist_eval
 ```
+
+ps: 如果未指定`cls_label_path_train`/`cls_label_path_val`，会读取`data_path`下train/val里的图片作为train-set/val-set。
 
 部分训练日志如下所示。
 
@@ -143,13 +147,16 @@ python eval.py \
     --batch_size 512 \
     --crop_pct 0.9 \
     --data_path /path/to/imagenet/ \
+    --cls_label_path_val /path/to/val_list.txt \
     --resume $TRAINED_MODEL
 ```
+
+ps: 如果未指定`cls_label_path_val`，会读取`data_path`/val里的图片作为val-set。
 
 ### 4.3 模型预测
 
 ```shell
-python infer.py \
+python predict.py \
     --model lvvit_t \
     --crop_pct 0.9 \
     --infer_imgs ./demo/ILSVRC2012_val_00020010.JPEG \
@@ -171,9 +178,20 @@ python infer.py \
 ```shell
 python export_model.py \
     --model lvvit_t \
-    --output_dir ./output/ \
+    --output_dir /path/to/save/export_model/ \
     --resume $TRAINED_MODEL
+
+python infer.py \
+    --model_file /path/to/save/export_model/output/model.pdmodel \
+    --params_file /path/to/save/export_model/output/model.pdiparams \
+    --input_file ./demo/ILSVRC2012_val_00020010.JPEG
 ```
+
+输出结果为
+```
+[{'class_ids': [178, 246, 171, 211, 209], 'scores': [0.9883329272270203, 0.00022819697915110737, 0.00021366256987676024, 0.0001897417096188292, 0.00013097828195896], 'file_name': './demo/ILSVRC2012_val_00020010.JPEG', 'label_names': ['Weimaraner', 'Great Dane', 'Italian greyhound', 'vizsla, Hungarian pointer', 'Chesapeake Bay retriever']}]
+```
+表示预测的类别为`Weimaraner（魏玛猎狗）`，ID是`178`，置信度为`0.9883329272270203`。与predict.py结果的误差在正常范围内。
 
 ## 5. 代码结构
 
@@ -182,8 +200,8 @@ python export_model.py \
 ├── engine.py
 ├── eval.py
 ├── export_model.py
-├── inference.py
 ├── infer.py
+├── predict.py
 ├── main.py
 ├── models.py
 ├── README.md
@@ -222,8 +240,8 @@ TIPC结果：
 Run successfully with command - python3.7 main.py --model=lvvit_t --drop_path=0.1 --lr=1.6e-3 --warmup_lr=1e-6 --min_lr=1e-5 --t_in_epochs --mixup=0 --cutmix=0 --crop_pct=0.9 --train_interpolation=random --data_path=./dataset/ILSVRC2012/ --cls_label_path_train=./dataset/ILSVRC2012/train_list.txt --cls_label_path_val=./dataset/ILSVRC2012/val_list.txt --token_label --token_label_data=./dataset/ILSVRC2012/label_top5_train_nfnet/ --token_label_size=14 --dist_eval --output_dir=./test_tipc/output/norm_train_gpus_0_autocast_null/lvvit_t --epochs=2 --batch_size=8 !
 Run successfully with command - python3.7 eval.py --model=lvvit_t --crop_pct=0.9 --data_path=./dataset/ILSVRC2012/ --cls_label_path_val=./dataset/ILSVRC2012/val_list.txt --resume=./test_tipc/output/norm_train_gpus_0_autocast_null/lvvit_t/checkpoint-latest.pd !
 Run successfully with command - python3.7 export_model.py --model=lvvit_t --resume=./test_tipc/output/norm_train_gpus_0_autocast_null/lvvit_t/checkpoint-latest.pd --output=./test_tipc/output/norm_train_gpus_0_autocast_null !
-Run successfully with command - python3.7 inference.py --use_gpu=True --use_tensorrt=False --precision=fp32 --model_file=./test_tipc/output/norm_train_gpus_0_autocast_null/model.pdmodel --batch_size=1 --input_file=./dataset/ILSVRC2012/val  --params_file=./test_tipc/output/norm_train_gpus_0_autocast_null/model.pdiparams > ./test_tipc/output/python_infer_gpu_usetrt_False_precision_fp32_batchsize_1.log 2>&1 !
-...
+Run successfully with command - python3.7 infer.py --use_gpu=True --use_tensorrt=False --precision=fp32 --model_file=./test_tipc/output/norm_train_gpus_0_autocast_null/model.pdmodel --batch_size=1 --input_file=./dataset/ILSVRC2012/val  --params_file=./test_tipc/output/norm_train_gpus_0_autocast_null/model.pdiparams > ./test_tipc/output/python_infer_gpu_usetrt_False_precision_fp32_batchsize_1.log 2>&1 !
+......
 ```
 
 * 更多详细内容，请参考：[TIPC测试文档](./test_tipc/README.md)。

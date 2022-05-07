@@ -1,6 +1,6 @@
 ===========================train_params===========================
 model_name:lvvit_t
-python:python3.7
+python:python3
 gpu_list:0|0,1
 null:null
 null:null
@@ -37,7 +37,7 @@ inference_dir:null
 infer_model:null
 infer_export:null
 infer_quant:False
-inference:inference.py
+inference:infer.py
 --use_gpu:True
 --enable_mkldnn:True|False
 --cpu_threads:1|2
