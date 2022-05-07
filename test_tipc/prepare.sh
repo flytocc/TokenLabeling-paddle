@@ -52,9 +52,5 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     rm -rf ILSVRC2012
     tar xf whole_chain_little_train.tar
     ln -s whole_chain_little_train ILSVRC2012
-    cd ILSVRC2012 
-    mv train.txt train_list.txt
-    mv val.txt val_list.txt
-    cp -r train/* val/
-    cd ../../
+    cd ../
 fi
