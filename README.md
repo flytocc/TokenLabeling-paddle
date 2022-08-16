@@ -254,3 +254,19 @@ All Tokens Matter is released under Apache-2.0 License.
 ## 8. 参考链接与文献
 1. All Tokens Matter: Token Labeling for Training Better Vision Transformers: https://arxiv.org/abs/2104.10858
 2. TokenLabeling: https://github.com/zihangJiang/TokenLabeling
+
+再次感谢`zihangJiang`等人贡献的[TokenLabeling](https://github.com/zihangJiang/TokenLabeling)，提高了本repo复现论文的效率。
+
+```
+@inproceedings{NEURIPS2021_9a49a25d,
+ author = {Jiang, Zi-Hang and Hou, Qibin and Yuan, Li and Zhou, Daquan and Shi, Yujun and Jin, Xiaojie and Wang, Anran and Feng, Jiashi},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {M. Ranzato and A. Beygelzimer and Y. Dauphin and P.S. Liang and J. Wortman Vaughan},
+ pages = {18590--18602},
+ publisher = {Curran Associates, Inc.},
+ title = {All Tokens Matter: Token Labeling for Training Better Vision Transformers},
+ url = {https://proceedings.neurips.cc/paper/2021/file/9a49a25d845a483fae4be7e341368e36-Paper.pdf},
+ volume = {34},
+ year = {2021}
+}
+```
