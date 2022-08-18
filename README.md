@@ -137,10 +137,6 @@ ps: 如果未指定`cls_label_path_train`/`cls_label_path_val`，会读取`data_
 
 ### 4.2 模型评估
 
-paddle bug: 不同batch_size得到的acc差别很大。
-
-通过.pdparams转.pth在[TokenLabeling](https://github.com/zihangJiang/TokenLabeling)测出的acc1 79.638 (without AMP)。
-
 ``` shell
 python eval.py \
     --model lvvit_t \
