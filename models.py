@@ -381,7 +381,7 @@ class LV_ViT(nn.Layer):
         if self.return_dense:
             x_aux = self.aux_head(x[:, 1:])
             if not self.training:
-                return x_cls + 0.5 * x_aux.max(1)[0]
+                return x_cls + 0.5 * x_aux.max(1)
 
             # recover the mixed part
             if do_mixed and self.mix_token and self.training:
